@@ -1,0 +1,32 @@
+---
+# Title: 
+#
+# Author: Bitfinity / L. Rutten
+# Owner: Bitfinity / L. rutten
+#
+# File: tasks/main.yml
+#
+# Description:
+#   This role configures a server with Jenkins.
+#
+# Source(s):
+#   - https://www.jenkins.io/
+#   - https://www.youtube.com/watch?v=LFDrDnKPOTg
+#   - https://hub.docker.com/r/jenkins/jenkins
+
+- name: "Install APT dependencies"
+  apt:
+    pkg:
+    - docker
+    - docker-compose
+    - docker.io
+    - python3-docker
+
+- name: "Docker pull (latest) image"
+  docker_image:
+    name: jenkins/jenkins:lts-jdk11
+
+- name: "Run Docker image"
+  docker_container:
+    
+       
