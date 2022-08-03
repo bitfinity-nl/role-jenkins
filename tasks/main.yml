@@ -14,19 +14,37 @@
 #   - https://www.youtube.com/watch?v=LFDrDnKPOTg
 #   - https://hub.docker.com/r/jenkins/jenkins
 
-- name: "Install APT dependencies"
+- name: "Install APT packages"
   apt:
     pkg:
     - docker
-    - docker-compose
     - docker.io
+    - docker-compose
     - python3-docker
 
 - name: "Docker pull (latest) image"
   docker_image:
     name: jenkins/jenkins:lts-jdk11
+    source: pull
 
-- name: "Run Docker image"
+- name: "Create directory for local Jenkins /opt/docker/jenkins/data/"
+  file:
+    path: /opt/docker/jenkins/data/
+    owner: jenkins
+    group: jenkins
+    mode: 0775
+    state: absent
+
+- name: "Run docker image"
   docker_container:
-    
+    name: jenkins
+    image: jenkins/jenkins:lts-jdk11
+    state: started
+    restart_policy: always
+    published_ports:
+      - 8080:8080
+      - 50000:50000
+    volumes:
+      - jenkins_home:/var/jenkins_home
+
        
